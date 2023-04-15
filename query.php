@@ -95,4 +95,27 @@ class Query extends Connection
 
         return $this;
     }
+
+    public function raw(string $query): self
+    {
+        $this->sql = $query;
+
+        return $this;
+    }
+
+    public function select(array $columns): self
+    {
+        $keys = implode(',', array_values($columns));
+
+        $this->sql = "SELECT $keys";
+
+        return $this;
+    }
+
+    public function from(string $table): self
+    {
+        $this->sql .= " FROM $table";
+
+        return $this;
+    }
 }

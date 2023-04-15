@@ -10,12 +10,13 @@ header('Accept: application/json');
 require_once 'query.php';
 
 $query = new Query;
-$table = 'categories';
+$table = 'categories'; // Replace it with your table
 $request = $_SERVER['REQUEST_METHOD'];
 $json = json_decode(file_get_contents('php://input'));
 
 if ($request == 'GET') {
     $query->get($table);
+
     if (isset($_GET['id'])) {
         $query->where(['id' => $_GET['id']]);
     }
