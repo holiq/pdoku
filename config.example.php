@@ -1,16 +1,16 @@
 <?php
 
-enum Config: string
+class Config
 {
-    case connection = 'mysql'; // mysql = nysql|mariadb, pgsql = postgresql
+    const CONNECTION = 'mysql'; // mysql = nysql|mariadb, pgsql = postgresql
 
-    case host = 'localhost';
+    const HOST = 'localhost';
 
-    case port = '3306'; // 3306 = mysql|mariadb, 5432 = postgresql
+    const PORT = '3306'; // 3306 = mysql|mariadb, 5432 = postgresql
 
-    case username = 'root';
+    const USERNAME = 'root';
 
-    case password = '';
+    const PASSWORD = '';
 
-    case database = 'pdoku';
+    const DATABASE = 'pdoku';
 }

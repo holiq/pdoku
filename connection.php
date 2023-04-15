@@ -12,12 +12,12 @@ class Connection
     public function __construct()
     {
         try {
-            $host = Config::host->value;
-            $connection = Config::connection->value;
-            $port = Config::port->value;
-            $username = Config::username->value;
-            $password = Config::password->value;
-            $database = Config::database->value;
+            $host = Config::HOST;
+            $connection = Config::CONNECTION;
+            $port = Config::PORT;
+            $username = Config::USERNAME;
+            $password = Config::PASSWORD;
+            $database = Config::DATABASE;
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
