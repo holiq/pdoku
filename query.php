@@ -9,25 +9,44 @@ class Query extends Connection
 
     protected $sql = null;
 
-    protected $data = [];
+    protected $params = [];
+
+    protected $data = null;
 
     protected $code = 200;
 
-    public function exec(): string
+    protected $msg = null;
+
+    public function exec()
     {
         try {
             $pdo = $this->pdo->prepare($this->sql);
-            $check = $pdo->execute($this->data);
+            $check = $pdo->execute($this->params);
             $result = $pdo->fetchAll();
 
             if ($check) {
-                return $this->response('success', $result, $this->code);
+                $this->data = $result;
+                $this->msg = 'success';
             } else {
-                return $this->response('failed', null, 422);
+                $this->msg = 'failed';
+                $this->code = 422;
             }
         } catch (PDOException $e) {
-            return $this->response('error', $e, 409);
+            $this->msg = $e->getMessage();
+            $this->code = 409;
         }
+
+        return $this;
+    }
+
+    public function toJson(): string
+    {
+        return $this->response($this->msg, $this->data, $this->code);
+    }
+
+    public function result(): string
+    {
+        return json_encode($this->data);
     }
 
     public function get(string $table): self
@@ -45,7 +64,7 @@ class Query extends Connection
         }, array_keys($options)));
 
         $this->sql .= " WHERE $opts";
-        $this->data = array_merge($this->data, array_values($options));
+        $this->params = array_merge($this->params, array_values($options));
 
         return $this;
 
@@ -58,7 +77,7 @@ class Query extends Connection
         }, array_keys($options)));
 
         $this->sql .= " OR $opts";
-        $this->data = array_merge($this->data, array_values($options));
+        $this->params = array_merge($this->params, array_values($options));
 
         return $this;
     }
@@ -70,7 +89,7 @@ class Query extends Connection
         $result = "($keys) VALUES ($values)";
 
         $this->sql = "INSERT INTO $table $result";
-        $this->data = array_values($data);
+        $this->params = array_values($data);
 
         return $this;
     }
@@ -82,7 +101,7 @@ class Query extends Connection
         }, array_keys($data)));
 
         $this->sql = "UPDATE $table SET $result";
-        $this->data = array_values($data);
+        $this->params = array_values($data);
         $this->where(['id' => $id]);
 
         return $this;

@@ -21,25 +21,25 @@ if ($request == 'GET') {
         $query->where(['id' => $_GET['id']]);
     }
 
-    $response = $query->exec();
+    $response = $query->exec()->toJson();
 }
 
 if ($request == 'POST') {
     $data = [
         'name' => $json->name,
     ];
-    $response = $query->store($table, $data)->exec();
+    $response = $query->store($table, $data)->exec()->toJson();
 }
 
 if ($request == 'PUT') {
     $data = [
         'name' => $json->name,
     ];
-    $response = $query->update($table, $data, $json->id)->exec();
+    $response = $query->update($table, $data, $json->id)->exec()->toJson();
 }
 
 if ($request == 'DELETE') {
-    $response = $query->delete($table, $json->id)->exec();
+    $response = $query->delete($table, $json->id)->exec()->toJson();
 }
 
 echo $response;
